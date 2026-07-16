@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.thefakedevs.taczextras.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "common.EntityKineticBulletMixin",
+    "common.LivingEntityBoltMixin",
+    "common.LivingEntityCrawlMixin",
+    "common.LivingEntityDrawGunMixin",
+    "common.ShooterDataHolderMixin",
+    "common.SoundManagerMixin",
+    "common.TargetBlockEntityMixin"
+  ],
+  "client": [
+    "client.CrawlKeyMixin",
+    "client.LocalPlayerAimMixin",
+    "client.LocalPlayerBoltMixin",
+    "client.LocalPlayerCrawlMixin",
+    "client.RenderHeadShotAabbMixin",
+    "client.SoundPlayManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

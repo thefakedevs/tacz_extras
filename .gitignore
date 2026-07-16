@@ -1,0 +1,16 @@
+.gradle/
+.idea/
+.vscode/
+.fleet/
+build/
+run/
+out/
+*.iml
+.classpath
+.project
+.settings/
+local.properties
+*.log
+*.hprof
+hs_err_pid*.log
+replay_pid*.log

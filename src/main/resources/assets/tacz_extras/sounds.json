@@ -1,0 +1,44 @@
+{
+  "bullet_hit_generic": {
+    "subtitle": "subtitle.tacz_extras.bullet_hit",
+    "sounds": [
+      "tacz_extras:bullet/bullet1",
+      "tacz_extras:bullet/bullet2",
+      "tacz_extras:bullet/bullet3",
+      "tacz_extras:bullet/bullet4",
+      "tacz_extras:bullet/bullet5",
+      "tacz_extras:bullet/bullet6",
+      "tacz_extras:bullet/bullet7",
+      "tacz_extras:bullet/bullet8",
+      "tacz_extras:bullet/bullet9",
+      "tacz_extras:bullet/bullet10",
+      "tacz_extras:bullet/bullet11",
+      "tacz_extras:bullet/bullet12",
+      "tacz_extras:bullet/bullet13",
+      "tacz_extras:bullet/bullet14",
+      "tacz_extras:bullet/bullet15",
+      "tacz_extras:bullet/bullet16"
+    ]
+  },
+  "bullet_hit_metal": {
+    "subtitle": "subtitle.tacz_extras.bullet_hit",
+    "sounds": [
+      "tacz_extras:bullet/metal_01",
+      "tacz_extras:bullet/metal_02",
+      "tacz_extras:bullet/metal_03",
+      "tacz_extras:bullet/metal_04",
+      "tacz_extras:bullet/metal_05"
+    ]
+  },
+  "bullet_hit_water": {
+    "subtitle": "subtitle.tacz_extras.bullet_hit_water",
+    "sounds": [
+      "tacz_extras:bullet/water_01",
+      "tacz_extras:bullet/water_02",
+      "tacz_extras:bullet/water_03",
+      "tacz_extras:bullet/water_04",
+      "tacz_extras:bullet/water_05",
+      "tacz_extras:bullet/water_06"
+    ]
+  }
+}
