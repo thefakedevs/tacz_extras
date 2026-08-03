@@ -17,9 +17,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.github.thefakedevs.taczextras.config.TaczExtrasConfig;
 
 @Mixin(value = LocalPlayerBolt.class, remap = false)
@@ -31,13 +33,28 @@ public abstract class LocalPlayerBoltMixin {
     @Final
     private LocalPlayer player;
 
-    /**
-     * @author TACZ Extras
-     * @reason Route manual bolting through the configurable synchronization implementation.
-     */
-    @Overwrite
-    public void bolt() {
-        taczExtras$bolt(true);
+    @Inject(method = "bolt", at = @At("HEAD"), cancellable = true)
+    private void taczExtras$retryDesynchronizedBolt(CallbackInfo ci) {
+        if (!TaczExtrasConfig.COMMON.enableEnhancedBolting.get()) {
+            return;
+        }
+
+        ItemStack mainHandItem = this.player.getMainHandItem();
+        if (!(mainHandItem.getItem() instanceof IGun gun)) {
+            return;
+        }
+
+        IGunOperator operator = IGunOperator.fromLivingEntity(this.player);
+        if (!this.data.isBolting
+                || this.data.clientStateLock
+                || operator.getSynIsBolting()
+                || gun.hasBulletInBarrel(mainHandItem)) {
+            return;
+        }
+
+        this.data.isBolting = false;
+        taczExtras$bolt(false);
+        ci.cancel();
     }
 
     @Unique
@@ -85,39 +102,4 @@ public abstract class LocalPlayerBoltMixin {
         });
     }
 
-    /**
-     * @author TACZ Extras
-     * @reason Retry a rejected or desynchronized bolt without replaying its feedback.
-     */
-    @Overwrite
-    public void tickAutoBolt() {
-        ItemStack mainHandItem = this.player.getMainHandItem();
-        if (!(mainHandItem.getItem() instanceof IGun gun)) {
-            this.data.isBolting = false;
-            return;
-        }
-
-        if (!TaczExtrasConfig.COMMON.enableEnhancedBolting.get()) {
-            this.bolt();
-            if (this.data.isBolting && gun.hasBulletInBarrel(mainHandItem)) {
-                this.data.isBolting = false;
-            }
-            return;
-        }
-
-        IGunOperator operator = IGunOperator.fromLivingEntity(this.player);
-        boolean retryBolt = false;
-        if (this.data.isBolting
-                && !this.data.clientStateLock
-                && !operator.getSynIsBolting()
-                && !gun.hasBulletInBarrel(mainHandItem)) {
-            this.data.isBolting = false;
-            retryBolt = true;
-        }
-
-        taczExtras$bolt(!retryBolt);
-        if (this.data.isBolting && gun.hasBulletInBarrel(mainHandItem)) {
-            this.data.isBolting = false;
-        }
-    }
 }
